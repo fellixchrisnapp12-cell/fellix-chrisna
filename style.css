@@ -240,3 +240,68 @@ body {
     font-size: 12px;
     color: #8C8C8C;
 }
+/* --- PENYESUAIAN MOBILE --- */
+
+@media (max-width: 768px) {
+    .dashboard-wrapper {
+        flex-direction: column; /* Sidebar pindah ke atas/bawah */
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 20px;
+        border-right: none;
+        border-bottom: 1px solid #EDEDED;
+    }
+
+    .sidebar ul {
+        display: none; /* Sembunyikan menu di mobile untuk hemat ruang (bisa diganti hamburger menu) */
+    }
+
+    .logo {
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .search-bar {
+        width: 70%; /* Input pencarian lebih fleksibel */
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr; /* Kartu menjadi 1 kolom penuh */
+        gap: 15px;
+    }
+
+    .bottom-grid {
+        grid-template-columns: 1fr; /* Grafik & Status menjadi tumpuk vertikal */
+    }
+
+    .time-filter {
+        overflow-x: auto; /* Jika tombol terlalu banyak, bisa di-scroll ke samping */
+        white-space: nowrap;
+        padding-bottom: 10px;
+    }
+
+    .stat-value {
+        font-size: 24px; /* Perkecil ukuran teks angka agar tidak pecah */
+    }
+    
+    .upgrade-pro {
+        display: none; /* Sembunyikan promo di mobile agar fokus ke data */
+    }
+}
