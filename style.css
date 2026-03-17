@@ -1,60 +1,242 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
+/* Reset Global & Font */
+* {
+    box-sizing: border-box;
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    font-family: 'Poppins', 'Segoe UI', sans-serif; /* Menggunakan Poppins jika tersedia */
+}
+
+body {
+    background-color: #F6F7F9;
     color: #333;
 }
 
-.container {
-    max-width: 1000px;
-    margin: auto;
+/* Dashboard Layout */
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
 }
 
-header {
+/* Sidebar - Mengikuti tata letak gambar */
+.sidebar {
+    width: 260px;
+    background-color: white;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #EDEDED;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #212121;
+    margin-bottom: 50px;
+}
+
+.sidebar ul {
+    list-style: none;
+    flex-grow: 1;
+}
+
+.sidebar li {
+    margin-bottom: 20px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: #8C8C8C;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.sidebar a i {
+    margin-right: 15px;
+    font-size: 18px;
+}
+
+.sidebar li.active a, .sidebar a:hover {
+    color: white;
+    background-color: #101828; /* Warna aktif gelap */
+}
+
+.upgrade-pro {
+    background-color: #101828;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
     text-align: center;
+}
+
+.upgrade-pro p {
+    font-size: 12px;
+    color: #BBBBBB;
+    margin-bottom: 15px;
+}
+
+.btn-upgrade {
+    background-color: #212121;
+    color: white;
+    border: 2px solid white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1;
+    padding: 30px;
+}
+
+/* Header */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 30px;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+.header-right {
+    display: flex;
+    align-items: center;
     gap: 20px;
 }
 
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    text-align: center;
-    transition: transform 0.3s;
+.search-bar {
+    padding: 10px 15px;
+    border: 1px solid #EDEDED;
+    border-radius: 8px;
+    width: 250px;
 }
 
-.card:hover {
-    transform: translateY(-5px);
+.notifications, .user-profile {
+    font-size: 20px;
+    color: #8C8C8C;
+    cursor: pointer;
 }
 
-.value {
-    font-size: 2.5rem;
+.user-profile {
+    width: 40px;
+    height: 40px;
+    background-color: #DDD;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-weight: bold;
-    color: #2e7d32; /* Warna hijau bawang */
+    color: #333;
 }
 
-.highlight {
-    background: #e3f2fd;
-    border-left: 5px solid #2196f3;
+/* Time Filter */
+.time-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    align-items: center;
 }
 
-.status-pompa {
-    margin-top: 30px;
-    padding: 20px;
+.time-filter button {
+    padding: 10px 20px;
+    border: 1px solid #EDEDED;
     background: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.time-filter button.active {
+    background-color: #101828;
+    color: white;
+    border: none;
+}
+
+.date-display {
+    color: #8C8C8C;
+    font-size: 14px;
+}
+
+/* Stats Grid - Menampilkan Metrik Bawang */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.card-stat {
+    background: white;
+    padding: 25px;
     border-radius: 15px;
+    border: 1px solid #EDEDED;
+}
+
+.stat-title {
+    color: #8C8C8C;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #212121;
+    margin-bottom: 10px;
+}
+
+.stat-change {
+    font-size: 12px;
+}
+
+.positive {
+    color: #2E7D32;
+}
+
+.negative {
+    color: #D32F2F;
+}
+
+.black-card {
+    background-color: #101828;
+    color: white;
+}
+
+.black-card .stat-title, .black-card .stat-value {
+    color: white;
+}
+
+/* Bagian Bawah Dashboard */
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+
+.card-graph, .card-status {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #EDEDED;
+}
+
+.chart-placeholder img {
+    max-width: 100%;
+}
+
+.status-indicator {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    padding: 15px;
+    border-radius: 8px;
     text-align: center;
+    margin-bottom: 15px;
     font-weight: bold;
 }
 
-#pompa {
-    color: #d32f2f;
+.status-meta {
+    font-size: 12px;
+    color: #8C8C8C;
 }
