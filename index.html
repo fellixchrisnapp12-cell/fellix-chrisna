@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Bawang Merah</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Dashboard Monitoring Bawang Merah</h1>
+            <p id="date-time"></p>
+        </header>
+
+        <div class="grid-container">
+            <div class="card">
+                <h3>Suhu Lingkungan</h3>
+                <div class="value"><span id="suhu">0</span>°C</div>
+            </div>
+
+            <div class="card">
+                <h3>pH Air</h3>
+                <div class="value" id="ph">0</div>
+            </div>
+
+            <div class="card">
+                <h3>Kelembapan Tanah</h3>
+                <div class="value"><span id="kelembapan">0</span>%</div>
+            </div>
+
+            <div class="card highlight">
+                <h3>Status Panel Surya</h3>
+                <p>Tegangan: <span id="tegangan">0</span> V</p>
+                <p>Arus: <span id="arus">0</span> A</p>
+            </div>
+        </div>
+
+        <div class="status-pompa">
+            <h3>Status Penyiraman: <span id="pompa">MATI</span></h3>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
