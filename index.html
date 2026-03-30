@@ -2,87 +2,25 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitoring Bawang Merah - Dashboard</title>
+    <title>Smart Lamp Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="dashboard-wrapper">
-        <aside class="sidebar">
-            <div class="logo">Skillset (Monitoring)</div>
-            <nav>
-                <ul>
-                    <li class="active"><a href="#"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                    <li><a href="#"><i class="fas fa-user-friends"></i> Petani / Mentors</a></li>
-                    <li><a href="#"><i class="fas fa-seedling"></i> Lahan Bawang</a></li>
-                    <li><a href="#"><i class="fas fa-chart-line"></i> Analytics</a></li>
-                    <li><a href="#"><i class="fas fa-history"></i> Riwayat Penyiraman</a></li>
-                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-                </ul>
-            </nav>
-            <div class="upgrade-pro">
-                <h3>Upgrade To Pro</h3>
-                <p>Fitur tambahan: Laporan otomatis & Analisis cuaca AI.</p>
-                <button class="btn-upgrade">Upgrade</button>
+    <div class="container">
+        <h1>Control Panel ESP32</h1>
+        <div class="card">
+            <h3>Intensitas Cahaya</h3>
+            <div id="ldr-value" class="sensor-val">0</div>
+        </div>
+        
+        <div class="card">
+            <h3>Kontrol Lampu</h3>
+            <div class="btn-group">
+                <button onclick="sendControl('on')" class="btn btn-on">NYALAKAN</button>
+                <button onclick="sendControl('off')" class="btn btn-off">MATIKAN</button>
             </div>
-        </aside>
-
-        <main class="main-content">
-            <header class="main-header">
-                <h2>Dashboard Monitoring</h2>
-                <div class="header-right">
-                    <input type="text" placeholder="Search..." class="search-bar">
-                    <div class="notifications"><i class="fas fa-bell"></i></div>
-                    <div class="user-profile">P</div> </div>
-            </header>
-
-            <div class="time-filter">
-                <button>Day</button>
-                <button>Week</button>
-                <button class="active">Month</button>
-                <button>Year</button>
-                <span class="date-display">1 Sep 2024 - 31 Sep 2024</span>
-            </div>
-
-            <div class="stats-grid">
-                <div class="card-stat black-card">
-                    <p class="stat-title">Status Penyiraman</p>
-                    <p class="stat-value pompa-active" id="pompa-status">MATI</p>
-                    <p class="stat-change negative"><i class="fas fa-clock"></i> <span id="waktu-operasi">0m</span>/Hari Ini</p>
-                </div>
-                <div class="card-stat">
-                    <p class="stat-title">pH Air</p>
-                    <p class="stat-value" id="ph">6.5</p>
-                    <p class="stat-change negative"><i class="fas fa-info-circle"></i> Ideal: 6-7</p>
-                </div>
-                <div class="card-stat">
-                    <p class="stat-title">Kelembapan Tanah</p>
-                    <p class="stat-value"><span id="kelembapan">82</span>%</p>
-                    <p class="stat-change positive"><i class="fas fa-arrow-up"></i> Cukup</p>
-                </div>
-                <div class="card-stat highlight-card">
-                    <p class="stat-title">Tegangan Panel Surya</p>
-                    <p class="stat-value"><span id="tegangan">13.2</span> V</p>
-                    <p class="stat-change positive"><i class="fas fa-sun"></i> Stabil</p>
-                </div>
-            </div>
-
-            <div class="bottom-grid">
-                <div class="card-graph">
-                    <h3>Tren Suhu Harian (°C)</h3>
-                    <div class="chart-placeholder">
-                        <img src="https://via.placeholder.com/600x250/fff/333?text=Grafik+Suhu+Placeholder" alt="Grafik Suhu">
-                    </div>
-                </div>
-                <div class="card-status">
-                    <h3>Status Lahan</h3>
-                    <div class="status-indicator">Sangat Lembap</div>
-                    <div class="status-meta">Terakhir Diperbarui: <span id="date-time-status">Sedang Memuat...</span></div>
-                </div>
-            </div>
-        </main>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
