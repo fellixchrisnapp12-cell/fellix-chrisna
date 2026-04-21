@@ -3,25 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Lamp Dashboard</title>
+    <title>Monitoring Bawang Merah - OPI evja</title>
+
+<title>Monitoring Bibit Bawang Merah</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Control Panel ESP32</h1>
-        <div class="card">
-            <h3>Intensitas Cahaya</h3>
-            <div id="ldr-value" class="sensor-val">0</div>
+       <aside class="sidebar">
+    <div class="logo">
+        MONITORING <br>
+        <span>BIBIT BAWANG MERAH</span>
+    </div>
+
+   <nav>
+    <ul>
+        <li id="btn-dashboard" class="active">
+            <i class="fas fa-th-large"></i> Dashboard
+        </li>
+        <li id="btn-riwayat">
+            <i class="fas fa-database"></i> Riwayat Data
+        </li>
+        <li id="btn-grafik">
+            <i class="fas fa-chart-line"></i> Grafik
+        </li>
+        <li id="btn-profil">
+            <i class="fas fa-id-card"></i> Profil
+        </li>
+        <li id="btn-proteksi">
+            <i class="fas fa-shield-alt"></i> Proteksi
+        </li>
+    </ul>
+</nav>
+</aside>
+
+        <main class="main-content">
+            <header>
+                <div class="header-info">
+                    <h1 id="page-title">Dashboard Monitoring</h1>
+                    <p>Home / <span id="breadcrumb">Dashboard Penyiraman</span></p>
+                </div>
+                <div class="status-bar">
+                    <span id="current-time">Memuat waktu...</span>
+                </div>
+            </header>
+
+            <div id="konten-dashboard">
+                <section class="dashboard-grid">
+                    <div class="card card-green">
+                        <div class="card-icon"><i class="fas fa-thermometer-half"></i></div>
+                        <div class="card-data">
+                            <h2 id="suhu">0</h2>
+                            <span>Suhu (°C)</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-tint"></i></div>
+                        <div class="card-data">
+                            <h2 id="ph-air">0</h2>
+                            <span>pH Air</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-seedling"></i></div>
+                        <div class="card-data">
+                            <h2 id="kelembapan">0</h2>
+                            <span>Kelembapan Tanah (%)</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-sun"></i></div>
+                        <div class="card-data">
+                            <h2 id="panel-watt">0 W</h2>
+                            <span class="label">Panel Surya</span>
+                            <div class="sub-data">
+                                <small id="panel-volt">0 V</small> | <small id="panel-ampere">0 A</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+    <div class="card-icon"><i class="fas fa-battery-three-quarters"></i></div>
+    <div class="card-data">
+        <h2 id="baterai-persen">0 %</h2>
+        <span class="label">Status Baterai</span>
+        <div class="sub-data">
+            <small id="baterai-volt">0 V (Input)</small>
         </div>
-        
-        <div class="card">
-            <h3>Kontrol Lampu</h3>
-            <div class="btn-group">
-                <button onclick="sendControl('on')" class="btn btn-on">NYALAKAN</button>
-                <button onclick="sendControl('off')" class="btn btn-off">MATIKAN</button>
+    </div>
+</div> <div class="card" id="card-pompa">
+    <div class="card-icon"><i class="fas fa-faucet"></i></div> 
+    <div class="card-data">
+        <h2 id="status-pompa">MATI</h2>
+        <span>Status Pompa</span>
+    </div>
+</div>
+<div class="card">
+    <div class="card-icon" style="background: rgba(52, 152, 219, 0.1); color: #3498db;">
+        <i class="fas fa-bolt"></i>
+    </div>
+    <div class="card-info">
+        <h3 id="pompa-wh">0 Wh</h3>
+        <p>KONSUMSI DAYA</p>
+        <span>Pompa Hari Ini</span>
+    </div>
+</div>
+                </section>
+            </div>
+
+            <<div id="konten-riwayat" style="display: none;">
+    
+    <div style="padding: 15px; display: flex; justify-content: flex-end;">
+        <button id="btn-download-pdf" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-file-pdf"></i> Download Laporan PDF
+        </button>
+    </div>
+    <section class="card full-width" style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+        ```
+    
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                           <thead>
+    <tr style="text-align: left; background: #f8f9fa;">
+        <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Waktu</th>
+        <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Suhu</th>
+        <th style="padding: 12px; border-bottom: 2px solid #27ae60;">pH</th>
+        <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Tanah</th>
+        <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Panel</th>
+        <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Pompa</th> 
+        <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Konsumsi</th> 
+    </tr>
+</thead>
+                            <tbody id="isi-tabel-riwayat">
+                                <tr><td colspan="5" style="text-align:center; padding: 20px;">Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+            <div id="konten-grafik" style="display: none;">
+                <h2 style="margin-bottom: 20px; color: #2c3e50;"><i class="fas fa-chart-line"></i> Grafik Pemantauan</h2>
+                
+                <div class="card" style="margin-bottom: 20px; padding: 20px; height: 350px;">
+                    <canvas id="grafikSuhu"></canvas>
+                </div>
+                
+                <div class="card" style="margin-bottom: 20px; padding: 20px; height: 350px;">
+                    <canvas id="grafikPh"></canvas>
+                </div>
+                
+                <div class="card" style="margin-bottom: 20px; padding: 20px; height: 350px;">
+                    <canvas id="grafikKelembapan"></canvas>
+                </div>
+                
+                <div class="card" style="margin-bottom: 20px; padding: 20px; height: 350px;">
+                    <canvas id="grafikVolt"></canvas>
+                </div>
+            </div>
+          <div id="konten-profil" style="display: none;">
+    <div class="profile-container">
+        <div class="card profile-card">
+            
+            <div class="profile-header">
+                <p>Tim Pengembang Sistem Monitoring <br> Bibit Bawang Merah</p>
+            </div>
+            
+            <div class="profile-content">
+                <div class="profile-photo">
+                    <img src="feldo.jpeg" alt="Foto Profil">
+                </div>
+                
+                <div class="team-members">
+                    <div class="member-info">
+                        <i class="fas fa-user-graduate"></i>
+                        <div class="member-text">
+                            <h3>FELLIX CHRISNA PUTRA PRATAMA</h3>
+                            <span>NIM: 2241190023</span>
+                        </div>
+                    </div>
+                    
+                    <div class="member-info">
+                        <i class="fas fa-user-graduate"></i>
+                        <div class="member-text">
+                            <h3>ALDO PRATAMA PUTRA</h3>
+                            <span>NIM: 2241190018</span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="konten-proteksi" style="display: none;">
+    <h2 style="margin-bottom: 20px; color: #2c3e50; padding: 0 20px;">Sistem Proteksi (INA226)</h2>
+    
+    <div class="dashboard-grid" id="grid-proteksi">
+        <div class="card" id="card-arus-lebih">
+            <div class="card-info">
+                <h3 id="status-arus-lebih">AMAN</h3>
+                <p>ARUS BERLEBIH</p>
+            </div>
+        </div>
+        <div class="card" id="card-arus-ekstrem">
+            <div class="card-info">
+                <h3 id="status-arus-ekstrem">NORMAL</h3>
+                <p>ARUS EKSTREM</p>
+            </div>
+        </div>
+        <div class="card" id="card-status-bms">
+            <div class="card-info">
+                <h3 id="status-bms">TERHUBUNG</h3>
+                <p>STATUS BATERAI</p>
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+</div>
+        </main>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    
+    <script src="app.js"></script>
+</body>
+</html>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
