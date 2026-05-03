@@ -76,16 +76,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-icon"><i class="fas fa-sun"></i></div>
-                        <div class="card-data">
-                            <h2 id="panel-watt">0 W</h2>
-                            <span class="label">Panel Surya</span>
-                            <div class="sub-data">
-                                <small id="panel-volt">0 V</small> | <small id="panel-ampere">0 A</small>
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <div class="card">
     <div class="card-icon"><i class="fas fa-battery-three-quarters"></i></div>
@@ -113,16 +104,32 @@
         <span>Pompa Hari Ini</span>
     </div>
 </div>
+<div class="card">
+    <div class="icon" style="color: #f39c12; font-size: 24px; margin-bottom: 10px;">
+        ⚡ 
+    </div>
+    <div class="info">
+        <h3 id="daya-aktif-pompa">0.00 W</h3>
+        <p style="font-weight: bold; color: #2c3e50;">DAYA AKTIF</p>
+        <p id="detail-kelistrikan" style="font-size: 0.85em; color: #7f8c8d; margin-top: 5px;">0.00 V | 0.00 A</p>
+    </div>
+</div>
                 </section>
             </div>
 
             <<div id="konten-riwayat" style="display: none;">
     
-    <div style="padding: 15px; display: flex; justify-content: flex-end;">
-        <button id="btn-download-pdf" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px;">
-            <i class="fas fa-file-pdf"></i> Download Laporan PDF
-        </button>
+    <div style="padding: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+    <!-- TAMBAHAN FITUR PILIH TANGGAL -->
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <label for="tanggal-riwayat" style="font-weight: bold; color: #2c3e50;">Pilih Tanggal:</label>
+        <input type="date" id="tanggal-riwayat" style="padding: 8px; border-radius: 8px; border: 1px solid #ccc; font-family: inherit;">
     </div>
+    
+    <button id="btn-download-pdf" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+        <i class="fas fa-file-pdf"></i> Download Laporan PDF
+    </button>
+</div>x
     <section class="card full-width" style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
         ```
     
@@ -134,7 +141,7 @@
         <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Suhu</th>
         <th style="padding: 12px; border-bottom: 2px solid #27ae60;">pH</th>
         <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Tanah</th>
-        <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Panel</th>
+        <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Voltage Baterai</th>
         <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Pompa</th> 
         <th style="padding: 12px; border-bottom: 2px solid #27ae60;">Konsumsi</th> 
     </tr>
