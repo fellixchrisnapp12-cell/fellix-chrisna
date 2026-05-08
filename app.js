@@ -38,7 +38,6 @@ const elements = {
     kontenProteksi: document.getElementById('konten-proteksi'),
     dayaAktifPompa: document.getElementById('daya-aktif-pompa'),
     detailKelistrikan: document.getElementById('detail-kelistrikan'),
-    // Tambahan elemen untuk input tanggal
     inputTanggal: document.getElementById('tanggal-riwayat') 
 };
 
@@ -91,9 +90,14 @@ function listenToData() {
             if(elements.phAir) elements.phAir.innerText = parseFloat(data.phAir || 0).toFixed(1);
             if(elements.kelembapan) elements.kelembapan.innerText = data.kelembapan || "0";
             
-            // Logika Baterai (Masih dipertahankan 12V untuk sementara)
+            // --- LOGIKA BATERAI BARU (LiFePO4 8S 24V) ---
             const vBatt = parseFloat(data.bateraiVolt || 0);
-            let persen = ((vBatt - 10.5) / (13.5 - 10.5)) * 100;
+            const voltMaksimal = 26.8; 
+            const voltMinimal = 24.0;
+            
+            let persen = ((vBatt - voltMinimal) / (voltMaksimal - voltMinimal)) * 100;
+            
+            // Batasi persentase agar tidak tembus di atas 100% atau di bawah 0%
             persen = Math.max(0, Math.min(100, persen)); 
             
             if(elements.bateraiPersen) elements.bateraiPersen.innerText = Math.round(persen) + " %";
@@ -118,26 +122,20 @@ function listenToData() {
 
 // 5. RIWAYAT & GRAFIK
 function muatRiwayat() {
-    // Set tanggal default ke hari ini jika input masih kosong
     if (elements.inputTanggal && !elements.inputTanggal.value) {
         elements.inputTanggal.value = new Date().toLocaleDateString('en-CA');
     }
 
-    // Ambil tanggal dari kalender (atau hari ini jika kalender tidak ada)
     const dateStr = elements.inputTanggal ? elements.inputTanggal.value : new Date().toLocaleDateString('en-CA');
     
-    // Matikan listener lama agar data antar tanggal tidak menumpuk saat ganti hari
     database.ref('logs').off(); 
 
-    // Ambil maksimal 50 data terakhir dari Firebase untuk tanggal yang dipilih
     database.ref(`logs/${dateStr}`).limitToLast(50).on('value', (snapshot) => {
         const data = snapshot.val();
         let html = '';
         if (data) {
             Object.keys(data).reverse().forEach(id => {
                 const item = data[id];
-                
-                // Ambil jam dari database ESP32
                 const jamTampil = item.waktu || "00:00:00";
                 const isNyala = (item.pompa === "ON" || item.pompa === "NYALA");
 
@@ -206,7 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setupNavigation();
     listenToData();
     
-    // Jika user memilih tanggal baru di kalender, muat ulang tabel dan grafik
     if (elements.inputTanggal) {
         elements.inputTanggal.addEventListener('change', () => {
             muatRiwayat();
@@ -221,13 +218,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 7. PDF EXPORT
 document.getElementById('btn-download-pdf').onclick = () => {
-    // Nama file PDF menyesuaikan dengan tanggal yang dipilih
     const dateStr = elements.inputTanggal ? elements.inputTanggal.value : new Date().toLocaleDateString('id-ID');
     
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     
-    // Header PDF
     doc.setFontSize(14);
     doc.text(`LAPORAN MONITORING BIBIT BAWANG MERAH`, 14, 20);
     doc.setFontSize(11);
