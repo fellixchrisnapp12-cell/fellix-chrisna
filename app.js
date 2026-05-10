@@ -116,6 +116,44 @@ function listenToData() {
             
             if (elements.dayaAktifPompa) elements.dayaAktifPompa.innerText = watt + " W";
             if (elements.detailKelistrikan) elements.detailKelistrikan.innerText = vBatt.toFixed(2) + " V | " + ampere + " A";
+
+            // ====================================================================
+            // LOGIKA SISTEM PROTEKSI (Berdasarkan Pompa 180W & BMS LiFePO4)
+            // ====================================================================
+            const nilaiAmpere = parseFloat(ampere);
+            const elArusLebih = document.getElementById('status-arus-lebih');
+            const cardArusLebih = document.getElementById('card-arus-lebih');
+            const elArusEkstrem = document.getElementById('status-arus-ekstrem');
+            const cardArusEkstrem = document.getElementById('card-arus-ekstrem');
+            const elStatusBms = document.getElementById('status-bms');
+            const cardStatusBms = document.getElementById('card-status-bms');
+
+            // 1. Proteksi Arus Berlebih (> 11 Ampere & <= 20 Ampere)
+            if (nilaiAmpere > 11 && nilaiAmpere <= 20) {
+                if(elArusLebih) elArusLebih.innerText = "PERINGATAN";
+                if(cardArusLebih) { cardArusLebih.style.backgroundColor = "#f39c12"; cardArusLebih.style.color = "white"; }
+            } else {
+                if(elArusLebih) elArusLebih.innerText = "AMAN";
+                if(cardArusLebih) { cardArusLebih.style.backgroundColor = "white"; cardArusLebih.style.color = "#2c3e50"; }
+            }
+
+            // 2. Proteksi Arus Ekstrem (> 20 Ampere)
+            if (nilaiAmpere > 20) {
+                if(elArusEkstrem) elArusEkstrem.innerText = "BAHAYA";
+                if(cardArusEkstrem) { cardArusEkstrem.style.backgroundColor = "#e74c3c"; cardArusEkstrem.style.color = "white"; }
+            } else {
+                if(elArusEkstrem) elArusEkstrem.innerText = "NORMAL";
+                if(cardArusEkstrem) { cardArusEkstrem.style.backgroundColor = "white"; cardArusEkstrem.style.color = "#2c3e50"; }
+            }
+
+            // 3. Status Terhubung BMS Baterai (< 5 Volt)
+            if (vBatt < 5) {
+                if(elStatusBms) elStatusBms.innerText = "TERPUTUS";
+                if(cardStatusBms) { cardStatusBms.style.backgroundColor = "#e74c3c"; cardStatusBms.style.color = "white"; }
+            } else {
+                if(elStatusBms) elStatusBms.innerText = "TERHUBUNG";
+                if(cardStatusBms) { cardStatusBms.style.backgroundColor = "#2ecc71"; cardStatusBms.style.color = "white"; }
+            }
         }
     });
 }
@@ -157,6 +195,7 @@ function muatRiwayat() {
 }
 
 function muatGrafik() {
+    // Pastikan Chart.js sudah siap
     if (!chartSuhu) {
         chartSuhu = inisialisasiGrafik('grafikSuhu', 'Suhu (°C)', '#e74c3c');
         chartPh = inisialisasiGrafik('grafikPh', 'pH Air', '#3498db');
@@ -164,27 +203,52 @@ function muatGrafik() {
         chartVolt = inisialisasiGrafik('grafikVolt', 'Voltase Baterai (V)', '#f1c40f');
     }
 
+    // Ambil tanggal yang dipilih di kalender
     const dateStr = elements.inputTanggal ? elements.inputTanggal.value : new Date().toLocaleDateString('en-CA');
     
-    database.ref(`logs/${dateStr}`).limitToLast(15).on('value', (snapshot) => {
+    // Gunakan .on('value') agar grafik update OTOMATIS saat ESP32 kirim data baru
+    database.ref(`logs/${dateStr}`).limitToLast(24).on('value', (snapshot) => {
         const data = snapshot.val();
         
         if (data) {
             const labels = [], dSuhu = [], dPh = [], dLembap = [], dVolt = [];
 
+            // Mengambil data dan mengurutkannya berdasarkan waktu
             Object.keys(data).forEach((id) => {
                 const item = data[id];
-                labels.push(item.waktu || "00:00");
+                
+                // Ambil format Jam:Menit saja agar grafik tidak kepanjangan
+                const waktuFull = item.waktu || "00:00";
+                const waktuSingkat = waktuFull.substring(0, 5); 
+
+                labels.push(waktuSingkat);
                 dSuhu.push(parseFloat(item.suhu || 0));
                 dPh.push(parseFloat(item.phAir || 0));
                 dLembap.push(parseFloat(item.kelembapan || 0));
                 dVolt.push(parseFloat(item.bateraiVolt || 0));
             });
 
-            if(chartSuhu) { chartSuhu.data.labels = labels; chartSuhu.data.datasets[0].data = dSuhu; chartSuhu.update(); }
-            if(chartPh) { chartPh.data.labels = labels; chartPh.data.datasets[0].data = dPh; chartPh.update(); }
-            if(chartKelembapan) { chartKelembapan.data.labels = labels; chartKelembapan.data.datasets[0].data = dLembap; chartKelembapan.update(); }
-            if(chartVolt) { chartVolt.data.labels = labels; chartVolt.data.datasets[0].data = dVolt; chartVolt.update(); }
+            // Update semua grafik secara bersamaan
+            if(chartSuhu) { 
+                chartSuhu.data.labels = labels; 
+                chartSuhu.data.datasets[0].data = dSuhu; 
+                chartSuhu.update('none'); 
+            }
+            if(chartPh) { 
+                chartPh.data.labels = labels; 
+                chartPh.data.datasets[0].data = dPh; 
+                chartPh.update('none'); 
+            }
+            if(chartKelembapan) { 
+                chartKelembapan.data.labels = labels; 
+                chartKelembapan.data.datasets[0].data = dLembap; 
+                chartKelembapan.update('none'); 
+            }
+            if(chartVolt) { 
+                chartVolt.data.labels = labels; 
+                chartVolt.data.datasets[0].data = dVolt; 
+                chartVolt.update('none'); 
+            }
         }
     });
 }
