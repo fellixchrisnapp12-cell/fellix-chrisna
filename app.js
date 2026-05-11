@@ -93,7 +93,7 @@
                 // --- LOGIKA BATERAI BARU (LiFePO4 8S 24V) ---
                 const vBatt = parseFloat(data.bateraiVolt || 0);
                 const voltMaksimal = 29.2; 
-                const voltMinimal = 24.0;
+                const voltMinimal = 21.6;
                 
                 let persen = ((vBatt - voltMinimal) / (voltMaksimal - voltMinimal)) * 100;
                 
