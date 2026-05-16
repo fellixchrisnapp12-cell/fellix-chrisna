@@ -83,7 +83,7 @@
 
     // 4. FUNGSI DATA
     function listenToData() {
-        database.ref('monitoring').on('value', (snapshot) => {
+        database.ref('monitoring_skripsi').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 if(elements.suhu) elements.suhu.innerText = parseFloat(data.suhu || 0).toFixed(2);
@@ -166,9 +166,9 @@
 
         const dateStr = elements.inputTanggal ? elements.inputTanggal.value : new Date().toLocaleDateString('en-CA');
         
-        database.ref('logs').off(); 
+        database.ref('logs_skripsi').off(); 
 
-        database.ref(`logs/${dateStr}`).limitToLast(50).on('value', (snapshot) => {
+        database.ref(`logs_skripsi/${dateStr}`).limitToLast(50).on('value', (snapshot) => {
             const data = snapshot.val();
             let html = '';
             if (data) {
@@ -207,7 +207,7 @@
         const dateStr = elements.inputTanggal ? elements.inputTanggal.value : new Date().toLocaleDateString('en-CA');
         
         // Gunakan .on('value') agar grafik update OTOMATIS saat ESP32 kirim data baru
-        database.ref(`logs/${dateStr}`).limitToLast(24).on('value', (snapshot) => {
+        database.ref(`logs_skripsi/${dateStr}`).limitToLast(24).on('value', (snapshot) => {
             const data = snapshot.val();
             
             if (data) {
